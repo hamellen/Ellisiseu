@@ -5,6 +5,8 @@ using Firebase.Extensions;
 using Google;
 using UnityEngine;
 using UnityEngine.UI;
+using Firebase;
+using Firebase.Auth;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -36,7 +38,17 @@ public class FirebaseManager : MonoBehaviour
 
     void InitFirebase()
     {
-        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
+            if (task.Result == DependencyStatus.Available)
+            {
+                auth = FirebaseAuth.DefaultInstance;
+                Debug.Log("Firebase 초기화 성공!");
+            }
+            else
+            {
+                Debug.LogError("Firebase 초기화 실패: " + task.Result);
+            }
+        });
     }
 
     public void GoogleSignInClick()

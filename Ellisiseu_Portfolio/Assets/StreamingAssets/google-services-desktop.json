@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "71589248415",
+    "project_id": "ellisiseu",
+    "storage_bucket": "ellisiseu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71589248415:android:c74c1525659172d15f91aa",
+        "android_client_info": {
+          "package_name": "com.hamelln.Ellisiseu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "71589248415-rhoitm3ibinm4bn43rq192karmbfjcvu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hamelln.Ellisiseu",
+            "certificate_hash": "61441e23224f9ef8931baccdd29b3dc63a370ee2"
+          }
+        },
+        {
+          "client_id": "71589248415-gje6sp8mr16bpsn17lr0ld067p8ha2qk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTB-sXX4D6EPQdxW91BUZEbwn7xwO012Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "71589248415-gje6sp8mr16bpsn17lr0ld067p8ha2qk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
