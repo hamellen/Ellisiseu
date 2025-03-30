@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class UI_POPUP : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        Manager.GetManager();
-        FirebaseManager.GetFireBaseManager();
+        
     }
 
     // Update is called once per frame

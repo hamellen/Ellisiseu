@@ -10,6 +10,12 @@ using Firebase.Auth;
 
 public class FirebaseManager : MonoBehaviour
 {
+
+    static FirebaseManager firebaseManager;
+
+    public static FirebaseManager GetFireBaseManager() { Init(); return firebaseManager; }
+
+
     public string GoogleAPI = "71589248415-gje6sp8mr16bpsn17lr0ld067p8ha2qk.apps.googleusercontent.com";
 
     private GoogleSignInConfiguration configuration;
@@ -33,6 +39,8 @@ public class FirebaseManager : MonoBehaviour
 
     private void Start()
     {
+        Init();
+
         InitFirebase();
     }
 
@@ -98,6 +106,19 @@ public class FirebaseManager : MonoBehaviour
                 // StartCoroutine(LoadImage(CheckImageUrl(user.PhotoUrl.ToString())));
             });
         }
+    }
+
+    static void Init() {
+
+        if (firebaseManager == null) {
+
+            GameObject go = new GameObject { name = "FireBaseManager" };
+            go.AddComponent<FirebaseManager>();
+            Debug.Log("파이어베이스 매니저 생성");
+            DontDestroyOnLoad(go);
+            firebaseManager = go.GetComponent<FirebaseManager>();
+        }
+    
     }
 
     // private string CheckImageUrl(string url) {
