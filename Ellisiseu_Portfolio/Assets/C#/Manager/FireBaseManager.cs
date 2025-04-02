@@ -7,14 +7,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using Firebase;
 using Firebase.Auth;
+using Fusion;
 
 public class FirebaseManager : MonoBehaviour
 {
 
-    static FirebaseManager firebaseManager;
+    public static FirebaseManager firebaseManager;
+    public static NetworkRunnerManager networkRunnerManager;
+    public static NetworkSceneManagerDefault networkSceneManager;
 
     public static FirebaseManager GetFireBaseManager() { Init(); return firebaseManager; }
-
+    public static NetworkSceneManagerDefault GetNetworkSceneManager() {  return networkSceneManager; }
 
     public string GoogleAPI = "71589248415-gje6sp8mr16bpsn17lr0ld067p8ha2qk.apps.googleusercontent.com";
 
@@ -114,9 +117,13 @@ public class FirebaseManager : MonoBehaviour
 
             GameObject go = new GameObject { name = "FireBaseManager" };
             go.AddComponent<FirebaseManager>();
+            go.AddComponent<NetworkRunnerManager>();
+            go.AddComponent<NetworkSceneManagerDefault>();
             Debug.Log("파이어베이스 매니저 생성");
             DontDestroyOnLoad(go);
             firebaseManager = go.GetComponent<FirebaseManager>();
+            networkRunnerManager= go.GetComponent<NetworkRunnerManager>();
+            networkSceneManager= go.GetComponent<NetworkSceneManagerDefault>();
         }
     
     }

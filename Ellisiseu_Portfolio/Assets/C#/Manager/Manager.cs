@@ -12,14 +12,14 @@ public class Manager : MonoBehaviour
 
 
 
-    UIManager ui = new UIManager();
+    UIManager ui = new UIManager();//UI 관리
     ResourcesManager resourcesManager = new ResourcesManager();
     //SceneManagerEx scenemanager = new SceneManagerEx();//씬 전환
     SoundManager soundManager = new SoundManager();//소리 
     DataManager dataManager = new DataManager();//데이터 보관
     ItemManager itemManager = new ItemManager();//실질적 아이템 현황
     TokenManager tokenManager = new TokenManager();//UniTask 중단 설정
-    NetworkRunnerManager networkRunnerManager = new NetworkRunnerManager();
+    //NetworkRunnerManager networkRunnerManager = new NetworkRunnerManager();//퓨전 관리 
 
 
     public static DataManager DATAMANAGER { get { return manager.dataManager; } }
@@ -38,7 +38,7 @@ public class Manager : MonoBehaviour
 
     public static TokenManager TOKENMANAGER { get { return manager.tokenManager; } }
 
-    public static NetworkRunnerManager NETWORKRUNNERMANAGER { get { return manager.networkRunnerManager; } }
+   // public static NetworkRunnerManager NETWORKRUNNERMANAGER { get { return manager.networkRunnerManager; } }
 
 
     static void Init()
@@ -55,8 +55,8 @@ public class Manager : MonoBehaviour
             manager = go.GetComponent<Manager>();
         }
 
-
-
+        SOUNDMANAGER.Init();
+        //NETWORKRUNNERMANAGER.Init();
     }
 
 
@@ -65,6 +65,8 @@ public class Manager : MonoBehaviour
     void Start()
     {
         Init();
+
+
     }
 
     // Update is called once per frame
