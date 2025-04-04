@@ -8,12 +8,16 @@ public class PlayerController : MonoBehaviour
     public bool IsPossess = false;
     public Animator animator;
 
+    public Transform Fire_Trans;
+    public List<AudioClip> fire_clips;
+    public GameObject pre_Bullet;
+
     Movement2D movement;
     // Start is called before the first frame update
     void Start()
     {
-        Manager.GetManager();
-        FirebaseManager.GetFireBaseManager();
+
+        Manager.UI.ShowBasicUI("Basic_UI");
 
         animator = GetComponent<Animator>();
 
@@ -37,7 +41,7 @@ public class PlayerController : MonoBehaviour
            movement.enabled = IsPossess;
         }
         else if (IsPossess) {
-
+            
             IsPossess = !IsPossess;
             movement.enabled = IsPossess;
 
@@ -48,6 +52,9 @@ public class PlayerController : MonoBehaviour
     public void Weapon_Fire() {
 
         animator.SetTrigger("Fire");
+        Manager.SOUNDMANAGER.Play(Define.Sound.D2_Effect, fire_clips[Random.Range(0, fire_clips.Count)], 1.0f);
+        //Manager.RESOURCES.Instantiate("Player/Bullet", Fire_Trans);
+        Instantiate(pre_Bullet, Fire_Trans.position, Fire_Trans.rotation);
     }
 
     public void Weapon_Reload() {

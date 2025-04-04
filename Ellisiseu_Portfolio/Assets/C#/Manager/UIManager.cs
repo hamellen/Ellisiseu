@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UIManager 
 {
@@ -10,21 +11,21 @@ public class UIManager
 
    
 
-    public UI_POPUP ShowPopUI(string name)
+    public void  ShowPopUI(string name)
     {
         order++;
-        GameObject go = Manager.RESOURCES.Instantiate($"Prefab/UI/{name}");
+        GameObject go = Manager.RESOURCES.Instantiate($"UI/PopUp/{name}");
 
         go.GetComponent<Canvas>().sortingOrder = order;
         popupStack.Push(go.GetComponent<UI_POPUP>());
 
-        return go.GetComponent<UI_POPUP>();
+       
     }
 
     public void ShowBasicUI(string name)
     {
 
-        Manager.RESOURCES.Instantiate($"Prefab/UI/{name}");
+        Manager.RESOURCES.Instantiate($"UI/{name}");
 
 
     }
