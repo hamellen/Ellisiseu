@@ -1,9 +1,10 @@
-using Fusion;
+﻿using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Collections.Unicode;
 
 public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
 {
@@ -11,22 +12,61 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
    
     public NetworkRunner networkRunner;
 
-    void Start()
+    public List<SessionInfo> currentSessionList = new List<SessionInfo>();//세션 목록
+
+    async void Start()
     {
         networkRunner = Manager.RESOURCES.Load<GameObject>("Prefab/fussion/NetworkRunner").GetComponent<NetworkRunner>();
+        networkRunner.ProvideInput = false;
+
+        await networkRunner.StartGame(new StartGameArgs()//로비모드
+        {
+            GameMode = GameMode.Client, // 세션에 바로 참가하지 않음
+            SessionName = "", // 비워두면 "로비 대기 상태"
+            SceneManager = FirebaseManager.GetNetworkSceneManager(),
+            PlayerCount = 1
+        });
+
+
+    
     }
 
-    public async void StartGame(GameMode mode, string roomname) {
+    public void OnClick_RefreshSessionList()//찾기 버튼 누를시
+    {
+        Debug.Log($"📥 세션 수신됨: {currentSessionList.Count}개");
+
+        foreach (var session in currentSessionList)
+        {
+            Debug.Log($"세션 이름: {session.Name}, 인원: {session.PlayerCount}/{session.MaxPlayers}");
+        }
+
+
+
+    }
+
+
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)//자동 호출
+    {
+
+        currentSessionList = sessionList;
+        
+    }
+
+
+
+    public async void StartGame(GameMode mode, string roomname) {//host 와 client 사용
 
 
         networkRunner.AddCallbacks(this);
 
-        var startGameArgs = new StartGameArgs()//���� �漳��
+        var startGameArgs = new StartGameArgs()//세션 방설정
         {
 
 
             GameMode = mode,
             SessionName = roomname,
+            IsVisible = true, 
+            IsOpen = true,
             PlayerCount = 4,
             SceneManager = FirebaseManager.GetNetworkSceneManager(),
 
@@ -35,7 +75,7 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
         var result=await networkRunner.StartGame(startGameArgs);
 
         if (result.Ok) {
-            Debug.Log("���� ����  ");
+            Debug.Log("세션 생성  ");
 
             string Scene_name = "GameStage";
             networkRunner.SetActiveScene(Scene_name);
@@ -109,10 +149,7 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
         
     }
 
-    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
-    {
-        
-    }
+    
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {

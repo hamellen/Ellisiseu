@@ -25,9 +25,12 @@ public class UIManager
     public void ShowBasicUI(string name)
     {
 
-        Manager.RESOURCES.Instantiate($"UI/{name}");
+        GameObject go=Manager.RESOURCES.Instantiate($"UI/{name}");
 
+        if (go == null) {
 
+            Debug.Log("No Basic UI");
+        }
     }
 
     

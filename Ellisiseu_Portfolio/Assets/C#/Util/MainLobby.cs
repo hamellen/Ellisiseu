@@ -22,6 +22,11 @@ public class MainLobby : MonoBehaviour
         Manager.UI.ShowPopUI("PopUp_Exit");
     }
 
+    public void ShowSessionCount() {
 
+        Manager.UI.ShowPopUI("PopUp_Session");
+        FirebaseManager.GetNetworkRunnerManager().OnClick_RefreshSessionList();
+
+    }
     
 }
