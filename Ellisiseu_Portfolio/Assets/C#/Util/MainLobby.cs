@@ -25,7 +25,7 @@ public class MainLobby : MonoBehaviour
     public void ShowSessionCount() {
 
         Manager.UI.ShowPopUI("PopUp_Session");
-        FirebaseManager.GetNetworkRunnerManager().OnClick_RefreshSessionList();
+        FirebaseManager.GetNetworkRunnerManager().RefreshSessionList();
 
     }
     

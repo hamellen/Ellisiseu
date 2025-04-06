@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 using static Unity.Collections.Unicode;
 
 public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
@@ -31,8 +32,12 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
     
     }
 
-    public void OnClick_RefreshSessionList()//찾기 버튼 누를시
+    public void RefreshSessionList()
     {
+
+        GetCurrentSessionList().Forget();
+
+
         Debug.Log($"📥 세션 수신됨: {currentSessionList.Count}개");
 
         foreach (var session in currentSessionList)
@@ -43,6 +48,16 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
 
 
     }
+
+    async UniTaskVoid GetCurrentSessionList() {
+
+
+
+
+
+
+    }
+
 
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)//자동 호출

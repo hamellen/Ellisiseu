@@ -126,7 +126,7 @@ public class FirebaseManager : MonoBehaviour
             go.AddComponent<FirebaseManager>();
             go.AddComponent<NetworkRunnerManager>();
             go.AddComponent<NetworkSceneManagerDefault>();
-            go.AddComponent<LobbyManager>();
+            //go.AddComponent<LobbyManager>();
             Debug.Log("파이어베이스 매니저 생성");
             DontDestroyOnLoad(go);
             firebaseManager = go.GetComponent<FirebaseManager>();
