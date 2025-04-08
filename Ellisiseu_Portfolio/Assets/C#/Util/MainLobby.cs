@@ -28,5 +28,10 @@ public class MainLobby : MonoBehaviour
         FirebaseManager.GetNetworkRunnerManager().RefreshSessionList();
 
     }
+
+    public void ShowSettingUI() {
+
+        Manager.UI.ShowPopUI("PopUp_Setting");
+    }
     
 }

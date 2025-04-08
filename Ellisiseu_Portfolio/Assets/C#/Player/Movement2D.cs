@@ -9,11 +9,11 @@ public class Movement2D : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    PlayerInput player_input;
-    public Vector2 moveDirection2d,Direction2d;
+    [SerializeField]PlayerInput player_input;
+    [SerializeField] Vector2 moveDirection2d,Direction2d;
 
-    Animator animator;
-    Rigidbody2D rigid;
+    [SerializeField]Animator animator;
+    [SerializeField] Rigidbody2D rigid;
 
     public float movespeed = 5.0f;
 

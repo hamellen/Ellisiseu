@@ -5,14 +5,14 @@ using UnityEngine;
 public class Bullet_Controller : MonoBehaviour
 {
 
-    Rigidbody2D rb;
+    [SerializeField] Rigidbody2D rb;
 
-    public float bullet_speed;
+    [SerializeField] float bullet_speed;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame

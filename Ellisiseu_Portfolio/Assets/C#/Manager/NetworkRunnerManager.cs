@@ -5,7 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+
 using static Unity.Collections.Unicode;
+using UnityEngine.SceneManagement;
 
 public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
 {
@@ -15,21 +17,34 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
 
     public List<SessionInfo> currentSessionList = new List<SessionInfo>();//세션 목록
 
+    
+
     async void Start()
     {
-        networkRunner = Manager.RESOURCES.Load<GameObject>("Prefab/fussion/NetworkRunner").GetComponent<NetworkRunner>();
+        if (networkRunner != null)
+        {
+            if (networkRunner.IsRunning)
+                await networkRunner.Shutdown();
+
+            Destroy(networkRunner.gameObject); // 💥 기존 runner 제거
+        }
+
+        // 새 runner 프리팹 인스턴스 생성
+        var runnerGO = Instantiate(Manager.RESOURCES.Load<GameObject>("Prefab/fussion/NetworkRunner"));
+        networkRunner = runnerGO.GetComponent<NetworkRunner>();
         networkRunner.ProvideInput = false;
 
-        await networkRunner.StartGame(new StartGameArgs()//로비모드
+        await networkRunner.StartGame(new StartGameArgs
         {
-            GameMode = GameMode.Client, // 세션에 바로 참가하지 않음
-            SessionName = "", // 비워두면 "로비 대기 상태"
+            GameMode = GameMode.Client,
+            SessionName = "",
+         
             SceneManager = FirebaseManager.GetNetworkSceneManager(),
             PlayerCount = 1
         });
 
+        
 
-    
     }
 
     public void RefreshSessionList()
@@ -44,17 +59,23 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
         {
             Debug.Log($"세션 이름: {session.Name}, 인원: {session.PlayerCount}/{session.MaxPlayers}");
         }
-
-
-
     }
 
-    async UniTaskVoid GetCurrentSessionList() {
+    async UniTask GetCurrentSessionList() {
 
+        if (networkRunner.IsRunning)
+        {
+            await networkRunner.Shutdown();
+        }
 
+        await networkRunner.StartGame(new StartGameArgs
+        {
+            GameMode = GameMode.Client,
+            SessionName = "",
 
-
-
+            SceneManager = FirebaseManager.GetNetworkSceneManager(),
+            PlayerCount = 1
+        });
 
     }
 
@@ -93,93 +114,51 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
             Debug.Log("세션 생성  ");
 
             string Scene_name = "GameStage";
-            networkRunner.SetActiveScene(Scene_name);
+            //await networkRunner.SetActiveScene(Scene_name);
         }
     }
 
-
-
-    public void OnConnectedToServer(NetworkRunner runner)
-    {
-        
-    }
-
-    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
-    {
-        
-    }
-
-    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
-    {
-        
-    }
-
-    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)
-    {
-        
-    }
-
-    public void OnDisconnectedFromServer(NetworkRunner runner)
-    {
-       
-    }
-
-    public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken)
-    {
-        
-    }
-
-    public void OnInput(NetworkRunner runner, NetworkInput input)
-    {
-        
-    }
-
-    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
-    {
-        
-    }
-
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
-    {
-        
-    }
-
-    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
-    {
-        
-    }
-
-    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data)
-    {
-        
-    }
-
-    public void OnSceneLoadDone(NetworkRunner runner)
-    {
-        
-    }
-
-    public void OnSceneLoadStart(NetworkRunner runner)
-    {
-        
-    }
+    public void OnConnectedToServer(NetworkRunner runner) { }
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
+    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
+    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
+   
+    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
+   
+    
+    public void OnSceneLoadDone(NetworkRunner runner) { }
+    public void OnSceneLoadStart(NetworkRunner runner) { }
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) { }
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }
+    public void OnInput(NetworkRunner runner, NetworkInput input) { }
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
+    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
+    public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
+    public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
+   
 
     
 
-    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
-    {
-        
-    }
-
-    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
-    {
-        
-    }
+    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
 
     public void Init() { 
     
     
         
     }
+
+   
+
+    public void OnDisconnectedFromServer(NetworkRunner runner)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken)
+    {
+        throw new NotImplementedException();
+    }
+
 
 }

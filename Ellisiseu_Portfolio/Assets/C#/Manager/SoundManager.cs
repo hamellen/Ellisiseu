@@ -7,6 +7,8 @@ public class SoundManager
 
     public AudioSource[] audioSources = new AudioSource[(int)Define.Sound.MaxCount];
 
+    public float BGM_value = 1.0f;
+    public float SFX_value = 1.0f;
 
     public void Init()
     {
@@ -64,6 +66,7 @@ public class SoundManager
                 audiosource.Pause();
             }
             audiosource.pitch = pitch;
+            audiosource.volume = BGM_value;
             audiosource.clip = clip;
             audiosource.Play();
         }
@@ -74,6 +77,7 @@ public class SoundManager
 
             AudioSource audiosource = audioSources[(int)Define.Sound.D2_Effect];
             audiosource.pitch = pitch;
+            audiosource.volume = SFX_value;
             audiosource.PlayOneShot(clip);//´Ü¹ß¼º
 
         }
@@ -88,13 +92,15 @@ public class SoundManager
         {
 
             AudioSource audiosource = audioSources[(int)Define.Sound.Bgm];
-            audiosource.volume = volume_value;
+            BGM_value = volume_value;
+            audiosource.volume = BGM_value;
 
         }
         else if (type == Define.Sound.D2_Effect)
         {
             AudioSource audiosource = audioSources[(int)Define.Sound.D2_Effect];
-            audiosource.volume = volume_value;
+            SFX_value = volume_value;
+            audiosource.volume = SFX_value;
 
         }
 

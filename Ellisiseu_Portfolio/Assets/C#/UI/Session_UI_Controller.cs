@@ -28,7 +28,7 @@ public class Session_UI_Controller : MonoBehaviour
 
     public void Refresh_Click() {
 
-        //Manager.RESOURCES.Instantiate("UI/PopUp/Session_Btn");
+        
 
         Session_Btn_Controller[] session_Btn_Controllers = Context.GetComponentsInChildren<Session_Btn_Controller>();
 
@@ -42,7 +42,7 @@ public class Session_UI_Controller : MonoBehaviour
 
         foreach (var session in FirebaseManager.GetNetworkRunnerManager().currentSessionList) {
 
-            GameObject go = Manager.RESOURCES.Instantiate("UI/PopUp/Session_Btn");
+            GameObject go = Manager.UI.ShowPopUI("Session_Btn");
             go.transform.SetParent(Context);
             go.GetComponent<Session_Btn_Controller>().SetText(session.Name,session.PlayerCount.ToString(),session.MaxPlayers.ToString());
         }
@@ -52,5 +52,11 @@ public class Session_UI_Controller : MonoBehaviour
     public void Close_PopUp() {
 
         Manager.UI.ClosePopUp();
+    }
+
+    public void Add_Session() {
+
+
+        Manager.UI.ShowPopUI("PopUp_Session_Create");
     }
 }

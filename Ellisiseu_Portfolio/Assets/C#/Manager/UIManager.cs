@@ -11,7 +11,7 @@ public class UIManager
 
    
 
-    public void  ShowPopUI(string name)
+    public GameObject  ShowPopUI(string name)
     {
         order++;
         GameObject go = Manager.RESOURCES.Instantiate($"UI/PopUp/{name}");
@@ -19,7 +19,7 @@ public class UIManager
         go.GetComponent<Canvas>().sortingOrder = order;
         popupStack.Push(go.GetComponent<UI_POPUP>());
 
-       
+        return go;
     }
 
     public void ShowBasicUI(string name)

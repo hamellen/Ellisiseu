@@ -8,9 +8,9 @@ public class PlayerController : MonoBehaviour
     public bool IsPossess = false;
     public Animator animator;
 
-    public Transform Fire_Trans;
-    public List<AudioClip> fire_clips;
-    public GameObject pre_Bullet;
+    [SerializeField] Transform Fire_Trans;
+    [SerializeField] List<AudioClip> fire_clips;
+    [SerializeField] GameObject pre_Bullet;
 
     Movement2D movement;
     // Start is called before the first frame update

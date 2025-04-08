@@ -32,7 +32,8 @@ public class FirebaseManager : MonoBehaviour
 
     Firebase.DependencyStatus dependencyStatus = Firebase.DependencyStatus.UnavailableOther;
     Firebase.Auth.FirebaseAuth auth;
-    Firebase.Auth.FirebaseUser user;
+
+    public Firebase.Auth.FirebaseUser user;
 
     public Text Username, UserEmail;
 
@@ -126,13 +127,13 @@ public class FirebaseManager : MonoBehaviour
             go.AddComponent<FirebaseManager>();
             go.AddComponent<NetworkRunnerManager>();
             go.AddComponent<NetworkSceneManagerDefault>();
-            //go.AddComponent<LobbyManager>();
+            
             Debug.Log("파이어베이스 매니저 생성");
             DontDestroyOnLoad(go);
             firebaseManager = go.GetComponent<FirebaseManager>();
             networkRunnerManager= go.GetComponent<NetworkRunnerManager>();
             networkSceneManager= go.GetComponent<NetworkSceneManagerDefault>();
-            //lobbyManager = go.GetComponent<LobbyManager>();
+            
 
         }
     
