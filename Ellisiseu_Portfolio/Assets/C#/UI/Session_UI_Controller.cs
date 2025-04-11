@@ -13,7 +13,7 @@ public class Session_UI_Controller : MonoBehaviour
 
     public Transform Context;
 
-    public List<SessionInfo> currentSessionList;
+    public List<SessionInfo> currentSessionList=new List<SessionInfo>();
     // Start is called before the first frame update
     void Start()
     {

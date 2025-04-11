@@ -13,37 +13,71 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
 {
 
    
-    public NetworkRunner networkRunner;
+    public NetworkRunner Session_networkRunner;
+    public NetworkRunner Game_networkRunner;
+
+    public GameObject GO_Session;
+    public GameObject GO_Game;
+
 
     public List<SessionInfo> currentSessionList = new List<SessionInfo>();//세션 목록
 
-    
 
-    async void Start()
+    private void Start()
     {
-        if (networkRunner != null)
-        {
-            if (networkRunner.IsRunning)
-                await networkRunner.Shutdown();
+        
+        EnterLobby().Forget(); 
+    }
 
-            Destroy(networkRunner.gameObject); // 💥 기존 runner 제거
+    async UniTaskVoid EnterLobby()
+    {
+
+        Debug.Log("EnterLobby 진입");
+
+        if (Session_networkRunner != null)
+        {
+            if (Session_networkRunner.IsRunning)
+                await Session_networkRunner.Shutdown();
+
+            Destroy(Session_networkRunner.gameObject); // 💥 기존 runner 제거
         }
 
         // 새 runner 프리팹 인스턴스 생성
-        var runnerGO = Instantiate(Manager.RESOURCES.Load<GameObject>("Prefab/fussion/NetworkRunner"));
-        networkRunner = runnerGO.GetComponent<NetworkRunner>();
-        networkRunner.ProvideInput = false;
+        GO_Session = Instantiate(Manager.RESOURCES.Load<GameObject>("Prefab/fussion/Session_Runner"));
+        Session_networkRunner = GO_Session.GetComponent<NetworkRunner>();
+        Session_networkRunner.ProvideInput = false;
+        DontDestroyOnLoad(GO_Session);
 
-        await networkRunner.StartGame(new StartGameArgs
+        GO_Game = Instantiate(Manager.RESOURCES.Load<GameObject>("Prefab/fussion/Game_Runner"));
+        Game_networkRunner = GO_Game.GetComponent<NetworkRunner>();
+        Game_networkRunner.ProvideInput = false;
+        DontDestroyOnLoad(GO_Game);
+
+
+        await UniTask.Delay(100);
+
+        try
         {
-            GameMode = GameMode.Client,
-            SessionName = "",
-         
-            SceneManager = FirebaseManager.GetNetworkSceneManager(),
-            PlayerCount = 1
-        });
 
-        
+            Debug.Log("StartGame 시작");
+            var result = await Session_networkRunner.StartGame(new StartGameArgs
+            {
+                GameMode = GameMode.Host,
+                SessionName = "",
+                PlayerCount = 1,
+                SceneManager = GO_Session.GetComponent<NetworkSceneManagerDefault>(),
+                Scene = SceneManager.GetActiveScene().buildIndex
+            });
+            Debug.Log("StartGame 완료, 결과: " + result.ToString());
+
+            Debug.Log("로비모드 진입");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"EnterLobby 예외 발생: {ex.Message}");
+        }
+
+       
 
     }
 
@@ -63,18 +97,18 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
 
     async UniTask GetCurrentSessionList() {
 
-        if (networkRunner.IsRunning)
-        {
-            await networkRunner.Shutdown();
-        }
+        //if (Session_networkRunner.IsRunning)
+        //{
+        //    await Session_networkRunner.Shutdown();
+        //}
 
-        await networkRunner.StartGame(new StartGameArgs
+        await Session_networkRunner.StartGame(new StartGameArgs
         {
-            GameMode = GameMode.Client,
+            GameMode = GameMode.Host,
             SessionName = "",
-
-            SceneManager = FirebaseManager.GetNetworkSceneManager(),
-            PlayerCount = 1
+            PlayerCount = 1,
+            SceneManager = GO_Session.GetComponent<NetworkSceneManagerDefault>(),
+            Scene = SceneManager.GetActiveScene().buildIndex
         });
 
     }
@@ -93,7 +127,7 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
     public async void StartGame(GameMode mode, string roomname) {//host 와 client 사용
 
 
-        networkRunner.AddCallbacks(this);
+        Game_networkRunner.AddCallbacks(this);
 
         var startGameArgs = new StartGameArgs()//세션 방설정
         {
@@ -104,11 +138,11 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
             IsVisible = true, 
             IsOpen = true,
             PlayerCount = 4,
-            SceneManager = FirebaseManager.GetNetworkSceneManager(),
+            SceneManager = FirebaseManager.GetNetworkRunnerManager().GO_Game.GetComponent<NetworkSceneManagerDefault>(),
 
         };
 
-        var result=await networkRunner.StartGame(startGameArgs);
+        var result=await Game_networkRunner.StartGame(startGameArgs);
 
         if (result.Ok) {
             Debug.Log("세션 생성  ");
