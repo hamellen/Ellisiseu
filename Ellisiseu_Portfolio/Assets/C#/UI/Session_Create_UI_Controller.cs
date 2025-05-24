@@ -39,31 +39,41 @@ public class Session_Create_UI_Controller : MonoBehaviour
             }
         }
 
-        var buildIndex = SceneManager.GetSceneByName("GameStage").buildIndex;
+        await PrepareSceneBeforeFusionStart();
+
 
         var startGameArgs = new StartGameArgs()//세션을 만든 유저가 자동으로 해당 씬으로 이동
         {
             GameMode = GameMode.Host,
             SessionName = inputField.text,
             PlayerCount = 5,
-            Scene = buildIndex,
             SceneManager = FirebaseManager.GetNetworkRunnerManager().GO_Game.GetComponent<NetworkSceneManagerDefault>()
         };
 
-        try
-        {
-            
-            Debug.Log("StartGame 시작");
-            await runner.StartGame(startGameArgs);
-            Debug.Log("StartGame 완료");
+        var result=await runner.StartGame(startGameArgs);
 
-            Debug.Log("로비모드 진입");
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"EnterLobby 예외 발생: {ex.Message}");
+        if (result.Ok) {
+
+
+            const string scene_name = "GameStage";
+            runner.SetActiveScene(scene_name);
         }
     }
+
+    private async UniTask PrepareSceneBeforeFusionStart()
+    {
+        // 현재 씬 이름 가져오기
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        // 씬 언로드 시도
+        if (currentScene.name == "GameLobby")
+        {
+            await SceneManager.UnloadSceneAsync(currentScene.name);
+        }
+
+       
+    }
+
 
     public void CloseTab() {
 

@@ -1,15 +1,22 @@
-# ========== Unity 기본 ==========
-
+# ===== 유니티 자동 생성 폴더 무시 =====
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
 [Ll]ogs/
-MemoryCaptures/
 UserSettings/
+MemoryCaptures/
+.collab/
 
-# ========== Visual Studio / JetBrains Rider 관련 ==========
+# ===== 빌드 결과물 무시 =====
+*.apk
+*.aab
+*.exe
+*.app
+*.ipa
+
+# ===== IDE 설정 무시 =====
 .vscode/
 .idea/
 *.csproj
@@ -23,37 +30,36 @@ UserSettings/
 *.svd
 *.pdb
 
-# ========== OS 관련 ==========
+# ===== OS/에디터 생성 파일 무시 =====
 .DS_Store
 Thumbs.db
 
-# ========== Crash & 디버깅 관련 ==========
-*.stacktrace
-*.log
+# ===== Unity 외 에셋/리소스 무시 =====
+Assets/**/*.png
+Assets/**/*.jpg
+Assets/**/*.jpeg
+Assets/**/*.psd
+Assets/**/*.tga
+Assets/**/*.fbx
+Assets/**/*.obj
+Assets/**/*.mp3
+Assets/**/*.wav
+Assets/**/*.ogg
+Assets/**/*.mp4
+Assets/**/*.mov
+Assets/**/*.prefab
+Assets/**/*.mat
+Assets/**/*.shader
+Assets/**/*.anim
+Assets/**/*.controller
+Assets/**/*.unity
+Assets/**/*.ttf
+Assets/**/*.otf
+Assets/**/*.asset
+Assets/**/*.bytes
+Assets/**/*.json
+Assets/**/*.xml
+Assets/**/*.csv
 
-# ========== Unity Collaborate ==========
-.collab/
-
-# ========== 빌드 산출물 (apk, exe 등) ==========
-*.apk
-*.aab
-*.exe
-*.app
-*.ipa
-
-# ========== Git LFS 등 버전용량 부담 요소 ==========
-*.unitypackage
-*.mp4
-*.mov
-*.zip
-*.rar
-*.7z
-*.tar
-*.gz
-*.iso
-*.psd
-*.tiff
-*.tga
-
-# ========== 기타 프로젝트 불필요 요소 ==========
-/Assets/AssetStoreTools*
+# ===== 모든 에셋 제외하고 C# 파일만 허용 =====
+!Assets/**/*.cs

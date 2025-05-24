@@ -10,8 +10,8 @@ public class MainLobby : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Manager.GetManager();
-        FirebaseManager.GetFireBaseManager();
+        //Manager.GetManager();
+       // FirebaseManager.GetFireBaseManager();
 
         Manager.SOUNDMANAGER.Play(Define.Sound.Bgm, MainBGM, 1.0f);
     }

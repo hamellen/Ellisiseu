@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - Player
   - Enemy
   - Bullet
-  - 
-  - 
+  - Collision
+  - Player_Check
   - 
   - 
   - 
@@ -47,6 +48,9 @@ TagManager:
   - name: Layer 2
     uniqueID: 4250941897
     locked: 0
-  - name: Layer 3
+  - name: Player
     uniqueID: 4189426099
+    locked: 0
+  - name: Layer 3
+    uniqueID: 761093551
     locked: 0

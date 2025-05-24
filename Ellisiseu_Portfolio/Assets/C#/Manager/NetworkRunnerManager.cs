@@ -56,6 +56,16 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
 
         await UniTask.Delay(100);
 
+
+        var loadOp = SceneManager.LoadSceneAsync("GameLobby", LoadSceneMode.Additive);
+        while (!loadOp.isDone)
+            await UniTask.Yield();
+
+        // 2. 씬이 완전히 로드되면 Active 씬으로 설정 (Fusion은 Active Scene 기준으로 작동)
+        Scene lobbyScene = SceneManager.GetSceneByName("GameLobby");
+        SceneManager.SetActiveScene(lobbyScene);
+
+
         try
         {
 
@@ -66,7 +76,7 @@ public class NetworkRunnerManager : MonoBehaviour,INetworkRunnerCallbacks
                 SessionName = "",
                 PlayerCount = 1,
                 SceneManager = GO_Session.GetComponent<NetworkSceneManagerDefault>(),
-                Scene = SceneManager.GetActiveScene().buildIndex
+                Scene = -1
             });
             Debug.Log("StartGame 완료, 결과: " + result.ToString());
 
